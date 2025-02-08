@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  BUYER
+  VENDOR
+}
+
+model Buyer {
+  id           Int      @id @default(autoincrement())
+  firstName    String
+  lastName     String
+  address      String
+  email        String   @unique
+  phoneNumber  String   @unique
+  password     String
+  role         UserRole @default(BUYER)
+  verifyMail   Boolean  @default(false)
+  verifyPhone  Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  referralCode String   @unique
+  referredBy   String
+  referrals    Int      @default(0)
+}
+
+model Vendor {
+  id          Int      @id @default(autoincrement())
+  firstName   String
+  lastName    String
+  address     String
+  email       String   @unique
+  phoneNumber String   @unique
+  password    String
+  role        UserRole @default(VENDOR)
+  verifyMail  Boolean  @default(false)
+  verifyPhone Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  referralCode String   @unique
+  referredBy   String
+  referrals    Int      @default(0)
+}
