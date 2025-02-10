@@ -2,9 +2,9 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-class BuyerAuthRepository {
+class VendorAuthRepository {
   constructor() {
-    this.model = prisma.buyer;
+    this.model = prisma.vendor;
   }
 
   async create(data) {
@@ -35,4 +35,4 @@ class BuyerAuthRepository {
   }
 }
 
-export default BuyerAuthRepository;
+export default VendorAuthRepository;

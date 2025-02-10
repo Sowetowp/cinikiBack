@@ -1,6 +1,6 @@
 import express from "express";
 import BuyerAuthController from "../controllers/buyerAuthController.js";
-import BuyerSignupDto from "../dto/buyerSignupDto.js";
+import BuyerAuthDto from "../dto/buyerAuthDto.js";
 
 class BuyerAuthRoutes {
     constructor() {
@@ -14,7 +14,8 @@ class BuyerAuthRoutes {
     }
 
     initializeRoutes() {
-        this.router.post("/", BuyerSignupDto, this.controller.buyerSignup);
+        this.router.post("/", BuyerAuthDto.BuyerSignupDto, this.controller.buyerSignup);
+        this.router.post("/signin", BuyerAuthDto.BuyerSigninDto, this.controller.buyerSignin);
     }
 }
 

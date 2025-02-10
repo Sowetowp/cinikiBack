@@ -9,4 +9,6 @@ class Vendor {
         this.referralCode = referralCode;
         this.referredBy = referredBy;
     }
-}  
+}
+
+export default Vendor

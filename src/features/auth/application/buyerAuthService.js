@@ -12,7 +12,7 @@ class BuyerAuthService {
     }
 
     async buyerSignup(buyerSignupData) {
-        const exist = await this.repository.findUserByEmailOrPhone(buyerSignupData.email, buyerSignupData.phoneNumber);
+        const exist = await this.repository.findByEmailOrPhone(buyerSignupData.email, buyerSignupData.phoneNumber);
         if (exist) {
             if (exist.email === buyerSignupData.email) {
                 throw new Error("Email is already taken.");
@@ -29,8 +29,8 @@ class BuyerAuthService {
         while (!isUnique && retryCount < maxRetries) {
             referralCode = this.generateReferralCode.generate(buyerSignupData.firstName)
 
-            const existingUser = await this.repository.findUserByCode(referralCode);
-            if (!existingUser && this.generateReferralCode.validate(referralCode)) {
+            const existingBuyer = await this.repository.findByCode(referralCode);
+            if (!existingBuyer && this.generateReferralCode.validate(referralCode)) {
                 isUnique = true;
             }
             retryCount++;
@@ -53,7 +53,7 @@ class BuyerAuthService {
             }
         }
 
-        const newBuyer = await this.repository.createBuyer(buyerSignupData);
+        const newBuyer = await this.repository.create(buyerSignupData);
 
         if (!newBuyer) {
             this.throwError("Failed to create buyer");
@@ -62,6 +62,18 @@ class BuyerAuthService {
         const token = new TokenService();
 
         return { ...newBuyer, token: token.generateToken(newBuyer._id) };
+    }
+
+    async buyerSignin(buyerSigninData) {
+        const buyer = await this.repository.findByEmail(buyerSigninData.email);
+        if (!buyer) {
+            throw new Error("You don't have an account")
+        }
+        if (!bcrypt.compareSync(buyerSigninData.password, buyer.password)) {
+            throw new Error('Incorrect password')
+        }
+        const token = new TokenService();
+        return { ...buyer, token: token.generateToken(buyer._id) };
     }
 }
 

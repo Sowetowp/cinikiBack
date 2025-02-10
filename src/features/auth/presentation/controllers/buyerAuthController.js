@@ -21,6 +21,21 @@ class BuyerAuthController {
             data: buyer
         });
     });
+
+    buyerSignin = expressAsyncHandler(async (req, res) => {
+        const buyerData = new Buyer(req.body);
+        const buyer = await this.service.buyerSignin(buyerData);
+
+        if (!buyer) {
+            res.status(500).json({ message: 'Failed to signin buyer' });
+        }
+        
+        return res.status(201).json({
+            message: "Buyer signin successfully",
+            status: 'ok',
+            data: buyer
+        });
+    });
 }
 
 export default BuyerAuthController;

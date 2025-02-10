@@ -6,7 +6,7 @@ import fileUpload from 'express-fileupload';
 import errorHandler from "./middleware/error-handler.js";
 import Database from "./config/db.js";
 import buyer_auth_router from "./features/auth/presentation/routes/buyerAuthRoute.js";
-// import customer_router from "./routes/CustomerRoutes.js";
+import vendor_auth_router from "./features/auth/presentation/routes/vendorAuthRoutes.js";
 
 dotenv.config({ path: ".env" });
 
@@ -36,7 +36,7 @@ class App {
 
     initializeRoutes() {
         this.app.use("/api/buyerauth", buyer_auth_router);
-        // this.app.use("/api/customer", customer_router);
+        this.app.use("/api/vendorauth", vendor_auth_router);
     }
 
     initializeErrorHandler() {
