@@ -2,11 +2,11 @@ import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
+import helmet from "helmet";
 import fileUpload from 'express-fileupload';
 import errorHandler from "./middleware/error-handler.js";
 import Database from "./config/db.js";
-import buyer_auth_router from "./features/auth/presentation/routes/buyerAuthRoute.js";
-import vendor_auth_router from "./features/auth/presentation/routes/vendorAuthRoutes.js";
+import user_auth_router from "./features/auth/presentation/routes/userAuthRoutes.js";
 
 dotenv.config({ path: ".env" });
 
@@ -28,6 +28,7 @@ class App {
 
     initializeMiddlewares() {
         this.app.use(morgan("dev"));
+        this.app.use(helmet());
         this.app.use(cors());
         this.app.use(express.json({ limit: "50mb" }));
         this.app.use(express.urlencoded({ extended: true, limit: "50mb" }));
@@ -35,8 +36,7 @@ class App {
     }
 
     initializeRoutes() {
-        this.app.use("/api/buyerauth", buyer_auth_router);
-        this.app.use("/api/vendorauth", vendor_auth_router);
+        this.app.use("/api/v1/userauth", user_auth_router);
     }
 
     initializeErrorHandler() {

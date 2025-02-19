@@ -1,5 +1,6 @@
-class Buyer {
-    constructor({ firstName, email, password, lastName, address, phoneNumber, referralCode, referredBy }) {
+class User {
+    constructor({ userId, firstName, email, password, lastName, address, phoneNumber, referralCode, referredBy, role, code }) {
+        this.id = userId;
         this.firstName = firstName;
         this.email = email;
         this.password = password;
@@ -8,7 +9,9 @@ class Buyer {
         this.phoneNumber = phoneNumber;
         this.referralCode = referralCode;
         this.referredBy = referredBy;
+        this.role = role;
+        this.otp = code;
     }
-}  
+}
 
-export default Buyer
+export default User

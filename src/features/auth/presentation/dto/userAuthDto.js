@@ -3,8 +3,9 @@ import Validator from "../../../../shared/validate.js";
 
 const strongPasswordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
 const stringPasswordError = "Password must be strong. At least one upper case letter, one lower case letter, one digit, one special character, and at least 8 characters long.";
-class BuyerAuthDto {
-    static BuyerSignupDto = (req, res, next) => {
+
+class UserAuthDto {
+    static userSignupDto = (req, res, next) => {
         const schema = Joi.object({
             email: Joi.string()
                 .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
@@ -59,13 +60,18 @@ class BuyerAuthDto {
                 .messages({
                     "string.empty": "Country is required",
                 }),
-            referredBy: Joi.string().trim().allow('').optional()
+            referredBy: Joi.string().trim().allow('').optional(),
+            role: Joi.string()
+                .valid("BUYER", "SELLER", "ADMIN")
+                .messages({
+                    "any.only": "Role must be either BUYER, SELLER, or ADMIN",
+                })
         });
 
         Validator.validateRequest(req, next, schema);
     };
 
-    static BuyerSigninDto = (req, res, next) => {
+    static userSigninDto = (req, res, next) => {
         const schema = Joi.object({
             email: Joi.string()
                 .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
@@ -88,5 +94,37 @@ class BuyerAuthDto {
 
         Validator.validateRequest(req, next, schema);
     };
-};
-export default BuyerAuthDto;
+
+    static sendOTP(req, res, next) {
+        const schema = Joi.object({
+            userId: Joi.number()
+                .required()
+                .messages({
+                    "number.base": "ID must be a number",
+                    "any.required": "ID is required",
+                }),
+        });
+
+        Validator.validateRequest(req, next, schema);
+    }
+
+    static verifyOTP(req, res, next) {
+        const schema = Joi.object({
+            userId: Joi.number()
+                .required()
+                .messages({
+                    "number.base": "ID must be a number",
+                    "any.required": "ID is required",
+                }),
+            code: Joi.string()
+                .required()
+                .messages({
+                    "any.required": "code is required",
+                }),
+        });
+
+        Validator.validateRequest(req, next, schema);
+    }
+}
+
+export default UserAuthDto  

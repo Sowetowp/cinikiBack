@@ -7,7 +7,7 @@ class MailService {
     port: 465,
     auth: {
       user: "ayodejiamzat@gmail.com",
-      pass: "",
+      pass: "hbjkrsrxpmxtalyo",
     },
   });
 
