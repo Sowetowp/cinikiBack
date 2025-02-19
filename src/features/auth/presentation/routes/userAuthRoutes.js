@@ -1,5 +1,5 @@
 import express from "express";
-import UserAuthController from "../controllers/UserAuthController.js";
+import UserAuthController from "../controllers/userAuthController.js";
 import UserAuthDto from "../dto/userAuthDto.js";
 
 class UserAuthRoutes {
