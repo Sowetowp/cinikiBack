@@ -130,7 +130,7 @@ class UserAuthService {
         const updated = await this.repository.update(user.id, { verifyMail: true });
 
         if (!updated) {
-            throw new Error("Failed to verify customer");
+            throw new Error("Failed to verify user");
         }
 
         return { success: true }
