@@ -56,9 +56,12 @@ class UserAuthService {
 
         signupData.password = hashedPass;
 
-        if (this.generateReferralCode.validate(signupData.referredBy)) {
-            const updated = await this.repository.updateWithField("referralCode", signupData.referredBy, { referrals: { increment: 1 } });
-            if (updated.count === 0) {
+        if (!this.generateReferralCode.validate(signupData.referredBy)) {
+            signupData.referredBy = "";
+        } else {
+            const verifyCode = await this.repository.updateWithField("referralCode", signupData.referredBy, { referrals: { increment: 1 } });
+
+            if (verifyCode.count === 0) {
                 signupData.referredBy = "";
             }
         }
