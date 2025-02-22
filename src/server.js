@@ -7,6 +7,8 @@ import fileUpload from 'express-fileupload';
 import errorHandler from "./middleware/error-handler.js";
 import Database from "./config/db.js";
 import user_auth_router from "./features/auth/presentation/routes/userAuthRoutes.js";
+import user_router from "./features/users/presentation/routes/userRoutes.js";
+import prisma from "./config/prisma.js";
 
 dotenv.config({ path: ".env" });
 
@@ -22,8 +24,16 @@ class App {
         this.initializeErrorHandler();
     }
 
-    initializeDatabase() {
-        this.db.connect();
+    async initializeDatabase() {
+        await this.db.connect();
+        
+        try {
+            await prisma.$connect();
+            console.log('✅ PostgreSQL connected via Prisma');
+        } catch (error) {
+            console.error('❌ PostgreSQL connection error:', error);
+            process.exit(1);
+        }
     }
 
     initializeMiddlewares() {
@@ -37,6 +47,7 @@ class App {
 
     initializeRoutes() {
         this.app.use("/api/v1/userauth", user_auth_router);
+        this.app.use("/api/v1/user", user_router);
     }
 
     initializeErrorHandler() {

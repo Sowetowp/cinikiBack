@@ -1,6 +1,6 @@
 import expressAsyncHandler from "express-async-handler";
 import UserAuthService from "../../application/userAuthServices.js";
-import User from "../../domain/user.js";
+import Auth from "../../domain/auth.js";
 
 class UserAuthController {
     constructor() {
@@ -8,7 +8,7 @@ class UserAuthController {
     }
 
     userSignup = expressAsyncHandler(async (req, res) => {
-        const userData = new User(req.body);
+        const userData = new Auth(req.body);
         const user = await this.service.userSignup(userData);
 
         if (!user) {
@@ -23,7 +23,7 @@ class UserAuthController {
     });
 
     userSignin = expressAsyncHandler(async (req, res) => {
-        const userData = new User(req.body);
+        const userData = new Auth(req.body);
         const user = await this.service.userSignin(userData);
 
         if (!user) {
@@ -38,7 +38,7 @@ class UserAuthController {
     });
 
     userSendOTP = expressAsyncHandler(async (req, res) => {
-        const userData = new User(req.body);
+        const userData = new Auth(req.body);
         const sent = await this.service.sendOtp(userData);
 
         if (!sent.success) {
@@ -53,7 +53,7 @@ class UserAuthController {
     });
 
     userVerifyOTP = expressAsyncHandler(async (req, res) => {
-        const userData = new User(req.body);
+        const userData = new Auth(req.body);
         const sent = await this.service.verifyOtp(userData);
 
         if (!sent.success) {

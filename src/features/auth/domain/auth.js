@@ -1,4 +1,4 @@
-class User {
+class Auth {
     constructor({ userId, firstName, email, password, lastName, address, phoneNumber, referralCode, referredBy, role, code }) {
         this.id = userId;
         this.firstName = firstName;
@@ -14,4 +14,4 @@ class User {
     }
 }
 
-export default User
+export default Auth
