@@ -1,5 +1,5 @@
 class Validator {
-    static validateRequest(req, next, schema, data) {
+    static validateRequest(req, next, schema, data = req.body) {
         const options = {
             abortEarly: false,
             allowUnknown: true,
