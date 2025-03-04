@@ -35,11 +35,17 @@ class UserAuthRepository {
     }
 
     async updateWithField(field, value, data) {
+        const record = await this.model.findUnique({
+            where: { [field]: value },
+        });
+    
+        if (!record) return { count: 0 };
+    
         return await this.model.update({
             where: { [field]: value },
             data,
         });
-    }
+    }   
 
     async delete(id) {
         return await this.model.delete({
